@@ -4,9 +4,9 @@
     "schemaVersion": 1,
     "properties": {
         "twitterSeachURLs": {
-            "title": "Twitter Profile",
+            "title": "Twitter Mentions Search URL",
             "type": "array",
-            "description": "List the full links to tweets you want to scape such as",
+            "description": "URL to the mentions you want to monitor",
             "editor": "requestListSources"
         },
         "maxTweets": {
