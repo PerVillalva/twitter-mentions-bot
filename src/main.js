@@ -1,5 +1,5 @@
 import { Actor, log } from 'apify';
-import { fetchTwitterData, fetchTweetAuthorInfo } from './data/twitter.js';
+import { fetchTwitterData } from './data/twitter.js';
 import {
     checkTaskRunNumber,
     fetchCurrentDatasetItems,
@@ -12,35 +12,24 @@ await Actor.init();
 
 const input = await Actor.getInput();
 const {
-    twitterSeachURLs,
+    twitterSearchTerm,
     maxTweets,
     slackChannel,
     slackBotToken,
     slackSignInSecret,
 } = input;
 
-const initialUrls = twitterSeachURLs.map((url) => {
-    const req = url.url;
-    return req;
-});
+const initialUrl = [
+    `https://twitter.com/search?q=${twitterSearchTerm.toLowerCase()}&f=live`,
+];
 
-await fetchTwitterData(initialUrls, maxTweets);
+await fetchTwitterData(initialUrl, maxTweets, twitterSearchTerm);
 
 const numberOfRuns = await checkTaskRunNumber();
 if (numberOfRuns >= 1) {
     const oldDataset = await fetchPreviousDatasetItems();
     const newDataset = await fetchCurrentDatasetItems();
     const differences = await compareDatasets(oldDataset, newDataset);
-
-    // --------------- Author Information Feature (Not Working - TODO) ---------------
-    // const usernamesArray = newDataset.reduce((uniqueArray, tweetDataset) => {
-    //     const url = `https://twitter.com/${tweetDataset.tweetAuthor}`;
-    //     if (uniqueArray.findIndex((obj) => obj.url === url) < 0) {
-    //         uniqueArray.push({ url });
-    //     }
-    //     return uniqueArray;
-    // }, []);
-    // const tweetAuthorInformation = await fetchTweetAuthorInfo(usernamesArray);
 
     let newTweets;
 
