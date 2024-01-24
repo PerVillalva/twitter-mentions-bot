@@ -12,9 +12,16 @@ export async function fetchTwitterData(twitterSeachUrl, maxTweets, seachTerm) {
         });
 
         const twitterTaskId = twitterActor.defaultDatasetId;
-        const tweets = await fetchDataFromApify(twitterTaskId);
+        let tweets = await fetchDataFromApify(twitterTaskId);
 
-        const recentMentions = tweets.slice(0, maxTweets).map((tweet) => ({
+        const twoDaysAgo = new Date();
+        twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+
+        tweets = tweets
+            .filter((tweet) => new Date(tweet.timestamp) >= twoDaysAgo)
+            .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+        const recentMentions = tweets.map((tweet) => ({
             tweetAuthor: tweet.username,
             tweetAvatar: tweet.tweet_avatar,
             tweetUrl: tweet.url,
@@ -28,8 +35,9 @@ export async function fetchTwitterData(twitterSeachUrl, maxTweets, seachTerm) {
         }));
 
         await Dataset.pushData(
-            recentMentions.filter((mention) =>
-                mention.tweetText.includes(seachTerm)
+            recentMentions.filter(
+                (mention) =>
+                    mention.tweetText.includes(seachTerm) && mention.tweetDate
             )
         );
         log.info('✅ Twitter data was successfully extracted.');
