@@ -49,12 +49,6 @@ export async function postSlackMessage(
         token: slackBotToken,
     });
 
-    // await app.client.chat.postMessage({
-    //     token: slackBotToken,
-    //     channel: slackChannel,
-    //     blocks: slackMessageBlock,
-    // });
-
     // Split keywordMessagesArr into chunks of 50 or less
     const chunkSize = 50;
     for (let i = 0; i < slackMessageBlock.length; i += chunkSize) {

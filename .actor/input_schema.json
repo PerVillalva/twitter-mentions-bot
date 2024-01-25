@@ -1,18 +1,20 @@
 {
-    "title": "Scrape data from a web page",
+    "title": "Twitter Mentions Actor",
     "type": "object",
     "schemaVersion": 1,
     "properties": {
-        "twitterSeachURLs": {
-            "title": "Twitter Mentions Search URL",
-            "type": "array",
-            "description": "URL to the mentions you want to monitor",
-            "editor": "requestListSources"
+        "twitterSearchTerm": {
+            "title": "Twitter Search Term",
+            "type": "string",
+            "prefill": "apify",
+            "default": "apify",
+            "description": "Search term you want to monitor.",
+            "editor": "textfield"
         },
         "maxTweets": {
-            "title": "Max Tweets Per URL",
+            "title": "Max Tweets",
             "type": "integer",
-            "description": "Set the maximum number of tweets to scrape per URL.",
+            "description": "Set the maximum number of tweets to scrape per search term.",
             "default": 10
         },
         "slackChannel": {
@@ -38,5 +40,5 @@
         }
     },
 
-    "required": ["twitterSeachURLs", "maxTweets"]
+    "required": ["twitterSearchTerm", "maxTweets"]
 }
