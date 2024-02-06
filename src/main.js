@@ -19,11 +19,7 @@ const {
     slackSignInSecret,
 } = input;
 
-const initialUrl = [
-    `https://twitter.com/search?q=${twitterSearchTerm.toLowerCase()}&f=live`,
-];
-
-await fetchTwitterData(initialUrl, maxTweets, twitterSearchTerm);
+await fetchTwitterData(maxTweets, twitterSearchTerm);
 
 const numberOfRuns = await checkTaskRunNumber();
 if (numberOfRuns >= 1) {

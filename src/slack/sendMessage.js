@@ -17,12 +17,12 @@ export async function postSlackMessage(
                 tweetAvatar,
                 tweetUrl,
                 tweetText,
-                tweetImage,
                 tweetDate,
                 tweetLikes,
                 tweetRetweets,
                 tweetReplies,
                 inReplyTo,
+                authorFollowers,
             } = tweet;
 
             // Generate Slack JSON block
@@ -32,11 +32,11 @@ export async function postSlackMessage(
                 tweetDate,
                 tweetText,
                 tweetUrl,
-                tweetImage,
                 tweetLikes,
                 tweetRetweets,
                 tweetReplies,
-                inReplyTo
+                inReplyTo,
+                authorFollowers
             );
 
             slackMessageBlock.push(...tweetBlock);
@@ -58,6 +58,8 @@ export async function postSlackMessage(
             channel: slackChannel,
             text: 'Tweet Mentions Bot',
             blocks: chunk,
+            unfurl_links: false,
+            unfurl_media: false,
         });
     }
 

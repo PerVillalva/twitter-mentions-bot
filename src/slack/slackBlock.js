@@ -4,11 +4,11 @@ export function generateBlock(
     date,
     text,
     tweetURL,
-    tweetImage,
     tweetLikes,
     tweetRetweets,
     tweetReplies,
-    inReplyTo
+    inReplyTo,
+    authorFollowers
 ) {
     const textBlock = {
         type: 'section',
@@ -43,7 +43,7 @@ export function generateBlock(
             type: 'section',
             text: {
                 type: 'mrkdwn',
-                text: `*Author*\n*${author}*\n\n\n*Date*\n${date}\n\n`,
+                text: `*:bust_in_silhouette: Author: \`${author}\`*\n\n\n*:busts_in_silhouette: Follower Count: \`${authorFollowers}\`*\n\n\n*:spiral_calendar_pad: Date: \`${date}\`*`,
             },
             accessory: {
                 type: 'image',
@@ -70,7 +70,7 @@ export function generateBlock(
                     ? [
                           {
                               type: 'mrkdwn',
-                              text: `*:leftwards_arrow_with_hook: In reply to ${inReplyTo[0]}*`,
+                              text: `*:leftwards_arrow_with_hook: In reply to ${inReplyTo}*`,
                           },
                       ]
                     : []),
@@ -79,16 +79,7 @@ export function generateBlock(
         {
             type: 'divider',
         },
-        ...(tweetImage.length > 0
-            ? [
-                  textBlock,
-                  {
-                      type: 'image',
-                      image_url: `${tweetImage[0]}`,
-                      alt_text: 'tweet_image',
-                  },
-              ]
-            : [textBlock]),
+        textBlock,
         {
             type: 'divider',
         },
