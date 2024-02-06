@@ -11,7 +11,7 @@ export async function postSlackMessage(
     // Prepare Tweets
     const slackMessageBlock = [];
     if (Array.isArray(newTweets) && newTweets.length > 0) {
-        newTweets.forEach((tweet, _) => {
+        newTweets.reverse().forEach((tweet, _) => {
             const {
                 tweetAuthor,
                 tweetAvatar,

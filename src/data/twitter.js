@@ -6,16 +6,20 @@ import { parseDate } from './utilFunctions.js';
 export async function fetchTwitterData(maxTweets, seachTerm) {
     log.info('🐦 Gathering Twitter Seach Data...');
     try {
-        const twitterActor = await Actor.call('microworlds/twitter-scraper', {
-            addUserInfo: true,
-            maxTweets: maxTweets,
-            scrapeTweetReplies: true,
-            searchTerms: [seachTerm],
-            searchMode: 'live',
-        });
+        let twitterActor;
+        let tweets;
+        do {
+            twitterActor = await Actor.call('microworlds/twitter-scraper', {
+                addUserInfo: true,
+                maxTweets: maxTweets,
+                scrapeTweetReplies: true,
+                searchTerms: [seachTerm],
+                searchMode: 'live',
+            });
 
-        const twitterTaskId = twitterActor.defaultDatasetId;
-        const tweets = await fetchDataFromApify(twitterTaskId);
+            const twitterTaskId = twitterActor.defaultDatasetId;
+            tweets = await fetchDataFromApify(twitterTaskId);
+        } while (tweets[0].zero_result);
 
         const twoDaysAgo = new Date();
         twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
