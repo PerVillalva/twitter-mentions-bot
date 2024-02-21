@@ -19,10 +19,18 @@ export async function fetchTwitterData(maxTweets, seachTerm) {
 
             const twitterTaskId = twitterActor.defaultDatasetId;
             tweets = await fetchDataFromApify(twitterTaskId);
-        } while (tweets[0].zero_result);
 
-        const twoDaysAgo = new Date();
-        twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+            const restrictDaysPeriod = new Date();
+            restrictDaysPeriod.setDate(restrictDaysPeriod.getDate() - 2);
+
+            tweets = tweets
+                .filter(
+                    (tweet) => new Date(tweet.created_at) >= restrictDaysPeriod
+                )
+                .sort(
+                    (a, b) => new Date(b.created_at) - new Date(a.created_at)
+                );
+        } while (tweets[0].zero_result);
 
         const recentMentions = tweets.map((tweet) => ({
             tweetAuthor: tweet.user.name,
