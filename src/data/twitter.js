@@ -37,7 +37,16 @@ export async function fetchTwitterData(maxTweets, seachTerm) {
             inReplyTo: tweet.in_reply_to_screen_name || '',
         }));
 
-        await Dataset.pushData(recentMentions);
+        // await Dataset.pushData(recentMentions);
+        await Dataset.pushData(
+            recentMentions.filter(
+                (mention) =>
+                    mention.tweetText
+                        .toLowerCase()
+                        .includes(seachTerm.toLowerCase()) ||
+                    mention.tweetAuthor === 'Apify'
+            )
+        );
 
         log.info('✅ Twitter data was successfully extracted.');
     } catch (error) {
