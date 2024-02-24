@@ -30,7 +30,7 @@ export async function fetchTwitterData(maxTweets, seachTerm) {
                 .sort(
                     (a, b) => new Date(b.created_at) - new Date(a.created_at)
                 );
-        } while (tweets[0].zero_result);
+        } while (tweets.length === 0);
 
         const recentMentions = tweets.map((tweet) => ({
             tweetAuthor: tweet.user.name,
